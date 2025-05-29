@@ -1,0 +1,71 @@
+---- Clear existing data (αντίστροφη σειρά λόγω foreign keys)
+--DELETE FROM refunds;
+--DELETE FROM payments;
+--DELETE FROM transactions;
+--DELETE FROM reservations;
+--DELETE FROM ticket_zone;
+--DELETE FROM event;
+--DELETE FROM organizers;
+--DELETE FROM visitors;
+--DELETE FROM zip_code;
+--
+--
+---- Insert visitors
+--INSERT INTO visitors (id, first_name, last_name, phone_number, username, password, email)
+--VALUES
+--(1, 'kostas', 'karlis', '6985486420', 'kkarlis', 'secure', 'karlis@aueb.gr'),
+--(2, 'vaggelis', 'zygokostas', '6985486421', 'vagzyg', 'test', 'zygo@aueb.gr'),
+--(3, 'Tasos', 'Koursos', '6985486422', 'tasoskour', '12345', 'tasoskour@aueb.gr');
+--
+--DELETE FROM event;
+--DELETE FROM organizers;
+--
+--INSERT INTO zip_code (zipCode) VALUES ('19100'), ('11471');
+--
+--INSERT INTO organizers (tax_id, brand_name, phone_number, username, password, email, street, number, zipCode)
+--VALUES ('123456789', 'TasosEvents', '210467829', 'Tasos', 'test', 'tasos@aueb.gr', 'lefkados', '3', '19100');
+--
+--INSERT INTO organizers (tax_id, brand_name, phone_number, username, password, email, street, number, zipCode)
+--VALUES ('987654321', 'VaggelisEvents', '210467830', 'Vag', 'pass123', 'vag@aueb.gr', 'panormou', '12', '11471');
+--
+---- Insert events
+--INSERT INTO Event (id, title, date, time, location, description, event_type, organizer)
+--VALUES
+--(1, 'posidonio', DATEADD('DAY', 10, CURRENT_DATE), '18:30:00', 'MetropolitanEXPO', 'TELEIO EVENT', 'CONCERT', 1),
+--(2, 'shakespeare', DATEADD('DAY', 15, CURRENT_DATE), '20:00:00', 'National Theater', 'A classic theater play', 'THEATER', 2),
+--(3, 'tech_conference', DATEADD('DAY', 5, CURRENT_DATE), '09:00:00', 'Athens Conference Center', 'Technology and innovation', 'SEMINAR', 1);
+--
+---- Insert ticket zones
+--INSERT INTO Τicket_zone (id, cost, category, available_seats, event_id)
+--VALUES
+--(1, 20.00, 'SIMPLE', 100, 1),
+--(2, 50.00, 'VIP', 20, 1),
+--(3, 15.00, 'SIMPLE', 150, 2),
+--(4, 30.00, 'VIP', 50, 2),
+--(5, 10.00, 'SIMPLE', 200, 3),
+--(6, 25.00, 'ARENA', 30, 3);
+--
+---- Insert reservations
+--INSERT INTO reservations (id, visitor_id, ticket_zone_id, reserved_seats, reservation_date, status, discount)
+--VALUES
+--(1, 1, 1, 2, CURRENT_TIMESTAMP, 'PENDING', NULL),
+--(2, 2, 2, 1, CURRENT_TIMESTAMP, 'PENDING', 'STUDENT'),
+--(3, 3, 3, 4, CURRENT_TIMESTAMP, 'PENDING', NULL),
+--(4, 1, 5, 3, CURRENT_TIMESTAMP, 'PENDING', 'PWD');
+--
+---- Insert transactions (payments and refunds)
+--INSERT INTO transactions (id, reservation_id, transaction_date, status, amount, type)
+--VALUES
+--(1, 1, CURRENT_TIMESTAMP, 'SUCCESS', 40.00, 'Payment'),
+--(2, 2, CURRENT_TIMESTAMP, 'SUCCESS', 40.00, 'Payment'),
+--(3, 1, CURRENT_TIMESTAMP, 'SUCCESS', 5.00, 'Refund');
+--
+---- Insert payment details
+--INSERT INTO payments (transaction_id, card_number, card_holder_name, expiry_date, cvv)
+--VALUES
+--(1, '1234567890987654', 'KARLIS KOSTAS', DATEADD('YEAR', 5, CURRENT_TIMESTAMP), 456),
+--(2, '9876543210123456', 'ZYGOKOSTAS VAGGELIS', DATEADD('YEAR', 3, CURRENT_TIMESTAMP), 789);
+--
+---- Insert refund details
+--INSERT INTO refunds (transaction_id, fee_percentage)
+--VALUES (3, 5.00);
